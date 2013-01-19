@@ -50,7 +50,7 @@ class graphite::whisper::package {
   }
 
   # action
-  package { $graphite::params::whisper_package:
+  package { $graphite::params::package_whisper:
     ensure => $package_ensure,
   }
 
