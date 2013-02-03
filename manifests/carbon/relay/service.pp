@@ -72,6 +72,30 @@ class graphite::carbon::relay::service {
 
   }
 
+  if ($graphite::carbon_relay_init_file != undef) {
+    file { 'carbon_relay_init_file':
+      ensure => present,
+      path   => '/etc/init.d/carbon-relay',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      source => $graphite::carbon_relay_init_file,
+      before => Service['carbon-relay'];
+    }
+  }
+
+  if ($graphite::carbon_relay_default_file != undef) {
+    file { 'carbon_relay_default_file':
+      ensure => present,
+      path   => "${graphite::params::service_default_path}/carbon-relay",
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      source => $graphite::carbon_relay_default_file,
+      before => Service['carbon-relay'];
+    }
+  }
+
   # action
   service { 'carbon-relay':
     ensure     => $service_ensure,

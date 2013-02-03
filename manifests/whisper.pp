@@ -57,19 +57,6 @@
 #
 # === Examples
 #
-# * Installation, make sure service is running and will be started at boot time:
-#     class { 'graphite': }
-#
-# * Removal/decommissioning:
-#     class { 'graphite':
-#       ensure => 'absent',
-#     }
-#
-# * Install everything but disable service(s) afterwards
-#     class { 'graphite':
-#       status => 'disabled',
-#     }
-#
 #
 # === Authors
 #

@@ -57,19 +57,6 @@
 #
 # === Examples
 #
-# * Installation, make sure service is running and will be started at boot time:
-#     class { 'graphite': }
-#
-# * Removal/decommissioning:
-#     class { 'graphite':
-#       ensure => 'absent',
-#     }
-#
-# * Install everything but disable service(s) afterwards
-#     class { 'graphite':
-#       status => 'disabled',
-#     }
-#
 #
 # === Authors
 #
@@ -115,15 +102,15 @@ class graphite::carbon(
   class { 'graphite::carbon::config': }
 
   # service(s)
-  if ($cache_enable == true) {
+  if $cache_enable == true {
     class { 'graphite::carbon::cache::service': }
   }
 
-  if ($relay_enable == true) {
+  if $relay_enable == true {
     class { 'graphite::carbon::relay::service': }
   }
 
-  if ($aggregator_enable == true) {
+  if $aggregator_enable == true {
     class { 'graphite::carbon::aggregator::service': }
   }
 
@@ -131,24 +118,24 @@ class graphite::carbon(
 
   if $ensure == 'present' {
 
-    if ($cache_enable == true) {
+    if $cache_enable == true {
       Class['graphite::carbon::package'] -> Class['graphite::carbon::cache::service']
       Class['graphite::carbon::config']  -> Class['graphite::carbon::cache::service']
     }
 
-    if ($relay_enable == true) {
+    if $relay_enable == true {
       Class['graphite::carbon::package'] -> Class['graphite::carbon::relay::service']
       Class['graphite::carbon::config']  -> Class['graphite::carbon::relay::service']
     }
 
-    if ($aggregator_enable == true) {
+    if $aggregator_enable == true {
       Class['graphite::carbon::package'] -> Class['graphite::carbon::aggregator::service']
       Class['graphite::carbon::config']  -> Class['graphite::carbon::aggregator::service']
     }
 
     graphite::carbon::cache::storage { 'default_1min_for_1day':
       pattern    => '.*',
-      retentions => '60s:1d',
+      retentions => '60s:1d'
     }
 
     # we need the software before configuring it
@@ -157,15 +144,15 @@ class graphite::carbon(
   } else {
 
     # make sure all services are getting stopped before software removal
-    if ($cache_enable == true) {
+    if $cache_enable == true {
       Class['graphite::carbon::cache::service'] -> Class['graphite::carbon::package']
     }
 
-    if ($relay_enable == true) {
+    if $relay_enable == true {
       Class['graphite::carbon::relay::service'] -> Class['graphite::carbon::package']
     }
 
-    if ($aggregator_enable == true) {
+    if $aggregator_enable == true {
       Class['graphite::carbon::aggregator::service'] -> Class['graphite::carbon::package']
     }
 

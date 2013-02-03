@@ -72,6 +72,30 @@ class graphite::carbon::cache::service {
 
   }
 
+  if ($graphite::carbon_cache_init_file != undef) {
+    file { 'carbon_cache_init_file':
+      ensure => present,
+      path   => '/etc/init.d/carbon-cache',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      source => $graphite::carbon_cache_init_file,
+      before => Service['carbon-cache'];
+    }
+  }
+
+  if ($graphite::carbon_cache_default_file != undef) {
+    file { 'carbon_cache_default_file':
+      ensure => present,
+      path   => "${graphite::params::service_default_path}/carbon-cache",
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      source => $graphite::carbon_cache_default_file,
+      before => Service['carbon-cache'];
+    }
+  }
+
   # action
   service { 'carbon-cache':
     ensure     => $service_ensure,
