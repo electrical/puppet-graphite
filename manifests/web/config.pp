@@ -35,7 +35,7 @@ class graphite::web::config {
 
   file { '/etc/graphite-web/local_settings.py':
     ensure  => present,
-    source  => $graphite::web::local_settings_file,
+    source  => template("$graphite::web::local_settings_file"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

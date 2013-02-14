@@ -63,7 +63,7 @@ An other of sequence can be given with the order => directive.
 For the graphite-web there are 2 variables:
 
      web_dashboard_config_file => "puppet:///modules/${module_name}/path/to/your/dashboard.conf"
-     web_local_settings_file   => "puppet:///modules/${module_name}/path/to/your/local_settings.py"
+     web_local_settings_file   => "${module_name}/etc/graphite-web/local_settings.py.erb"
 
 ### whisper
 

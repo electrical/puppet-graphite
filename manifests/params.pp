@@ -39,6 +39,9 @@ class graphite::params {
 
   # service status
   $status = 'enabled'
+  
+  # config timezone
+  $time_zone = 'Europe/Amsterdam'
 
   #### Internal module values
 
