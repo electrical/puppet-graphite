@@ -100,10 +100,10 @@ class graphite::carbon::relay::service {
   service { 'carbon-relay':
     ensure     => $service_ensure,
     enable     => $service_enable,
-    name       => $graphite::params::service_name,
-    hasstatus  => $graphite::params::service_hasstatus,
-    hasrestart => $graphite::params::service_hasrestart,
-    pattern    => $graphite::params::service_pattern,
+    name       => $graphite::params::service_relay_name,
+    hasstatus  => $graphite::params::service_relay_hasstatus,
+    hasrestart => $graphite::params::service_relay_hasrestart,
+    pattern    => $graphite::params::service_relay_pattern,
   }
 
 }
