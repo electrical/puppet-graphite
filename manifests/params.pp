@@ -46,8 +46,8 @@ class graphite::params {
   case $::operatingsystem {
     'CentOS', 'Fedora', 'Scientific': {
       # main application
-      $package_carbon  = [ 'carbon' ]
-      $package_whisper = [ 'whisper' ]
+      $package_carbon  = [ 'python-carbon' ]
+      $package_whisper = [ 'python-whisper' ]
       $package_web     = [ 'graphite-web']
     }
     'Debian', 'Ubuntu': {
