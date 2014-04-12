@@ -1,5 +1,5 @@
 name    'ispavailability-graphite'
-version '0.0.1'
+version '0.0.2'
 source 'https://github.com/electrical/puppet-graphite'
 author 'ispavailability'
 license 'Apache License, Version 2.0'
