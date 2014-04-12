@@ -52,9 +52,9 @@ class graphite::params {
     }
     'Debian', 'Ubuntu': {
       # main application
-      $package_carbon  = [ 'python-carbon' ]
+      $package_carbon  = [ 'graphite-carbon' ]
       $package_whisper = [ 'python-whisper' ]
-      $package_web     = [ 'python-graphite' ]
+      $package_web     = [ 'graphite-web' ] # available since Debian Jessie
     }
     default: {
       fail("\"${module_name}\" provides no package default value
