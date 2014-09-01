@@ -111,6 +111,7 @@ class graphite::carbon(
   }
 
   if $aggregator_enable == true {
+    class { 'graphite::carbon::aggregator::config': }
     class { 'graphite::carbon::aggregator::service': }
   }
 
@@ -129,6 +130,8 @@ class graphite::carbon(
     }
 
     if $aggregator_enable == true {
+      Class['graphite::carbon::config']  -> Class['graphite::carbon::aggregator::config']
+      Class['graphite::carbon::aggregator::config']  -> Class['graphite::carbon::aggregator::service']
       Class['graphite::carbon::package'] -> Class['graphite::carbon::aggregator::service']
       Class['graphite::carbon::config']  -> Class['graphite::carbon::aggregator::service']
     }
