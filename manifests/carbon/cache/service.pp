@@ -84,15 +84,51 @@ class graphite::carbon::cache::service {
     }
   }
 
-  if ($graphite::carbon_cache_default_file != undef) {
-    file { 'carbon_cache_default_file':
-      ensure => present,
-      path   => "${graphite::params::service_default_path}/carbon-cache",
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
-      source => $graphite::carbon_cache_default_file,
-      before => Service['carbon-cache'];
+  case $::lsbdistcodename {
+    'Trusty': {
+      if ($service_ensure == 'running') {
+        file_line { 'carbon_cache_default_enable_line':
+          line   => 'CARBON_CACHE_ENABLED=true',
+          path   => "${graphite::params::service_default_path}/graphite-carbon",
+          notify => Service['carbon-cache'],
+          before => Service['carbon-cache'];
+        }
+        file_line { 'carbon_cache_default_disable_line':
+          ensure => absent,
+          line   => 'CARBON_CACHE_ENABLED=false',
+          path   => "${graphite::params::service_default_path}/graphite-carbon",
+          notify => Service['carbon-cache'],
+          before => Service['carbon-cache'];
+        }
+      } else {
+        file_line { 'carbon_cache_default_enable_line':
+          ensure => absert,
+          line   => 'CARBON_CACHE_ENABLED=true',
+          path   => "${graphite::params::service_default_path}/graphite-carbon",
+          notify => Service['carbon-cache'],
+          before => Service['carbon-cache'];
+        }
+        file_line { 'carbon_cache_default_disable_line':
+          line   => 'CARBON_CACHE_ENABLED=false',
+          path   => "${graphite::params::service_default_path}/graphite-carbon",
+          notify => Service['carbon-cache'],
+          before => Service['carbon-cache'];
+        }
+      }
+    }
+    default: {
+      if ($graphite::carbon_cache_default_file != undef) {
+        file { 'carbon_cache_default_file':
+          ensure => present,
+          path   => "${graphite::params::service_default_path}/carbon-cache",
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+          source => $graphite::carbon_cache_default_file,
+          notify => Service['carbon-cache'],
+          before => Service['carbon-cache'];
+        }
+      }
     }
   }
 

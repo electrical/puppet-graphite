@@ -84,15 +84,42 @@ class graphite::carbon::relay::service {
     }
   }
 
-  if ($graphite::carbon_relay_default_file != undef) {
-    file { 'carbon_relay_default_file':
-      ensure => present,
-      path   => "${graphite::params::service_default_path}/carbon-relay",
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
-      source => $graphite::carbon_relay_default_file,
-      before => Service['carbon-relay'];
+  case $::lsbdistcodename {
+    'Trusty': {
+      if ($service_ensure == 'running') {
+        file_line { 'carbon_relay_default_enable_line':
+          line => 'CARBON_RELAY_ENABLED=true',
+          path => "${graphite::params::service_default_path}/graphite-carbon",
+        }
+        file_line { 'carbon_relay_default_disable_line':
+          ensure => absent,
+          line => 'CARBON_RELAY_ENABLED=false',
+          path => "${graphite::params::service_default_path}/graphite-carbon",
+        }
+      } else {
+        file_line { 'carbon_relay_default_enable_line':
+          ensure => absert,
+          line => 'CARBON_RELAY_ENABLED=true',
+          path => "${graphite::params::service_default_path}/graphite-carbon",
+        }
+        file_line { 'carbon_relay_default_disable_line':
+          line => 'CARBON_RELAY_ENABLED=false',
+          path => "${graphite::params::service_default_path}/graphite-carbon",
+        }
+      }
+    }
+    default: {
+      if ($graphite::carbon_relay_default_file != undef) {
+        file { 'carbon_relay_default_file':
+          ensure => present,
+          path   => "${graphite::params::service_default_path}/carbon-relay",
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+          source => $graphite::carbon_relay_default_file,
+          before => Service['carbon-relay'];
+        }
+      }
     }
   }
 

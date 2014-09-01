@@ -51,11 +51,20 @@ class graphite::params {
       $package_web     = [ 'graphite-web']
     }
     'Debian', 'Ubuntu': {
-      # main application
-      $package_carbon  = [ 'python-carbon' ]
-      $package_whisper = [ 'python-whisper' ]
-      $package_web     = [ 'python-graphite' ]
-    }
+      case $::lsbdistcodename {
+        'Trusty': {
+          # main application
+          $package_carbon  = [ 'graphite-carbon' ]
+          $package_whisper = [ 'python-whisper' ]
+          $package_web     = [ 'graphite-web' ]
+        }
+        default: {
+          # main application
+          $package_carbon  = [ 'python-carbon' ]
+          $package_whisper = [ 'python-whisper' ]
+          $package_web     = [ 'python-graphite' ]
+        }
+    }}
     default: {
       fail("\"${module_name}\" provides no package default value
             for \"${::operatingsystem}\"")
