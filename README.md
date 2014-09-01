@@ -27,7 +27,7 @@ Install everything but disable service(s) afterwards:
 ### carbon
 
 Carbon is 1 of the applications for graphite.
-You can activate the 3 separate services individually depending on requirments.
+You can activate the 3 separate services individually depending on requirements.
 
 Common config variables:
 
@@ -54,9 +54,35 @@ For defining the storage methods a define is in place:
        retentions => '60s:1d'
      }
 
-An other of sequence can be given with the order => directive.
+The order of the of storage definitions in the config file is
+determined by the order directive.  Each metric storage definition has
+a default order of 10.  Lower the value the earlier it will be in the
+file.
 
+#### storage aggregation definitions
 
+For defining the aggregation of a metric:
+
+     graphite::carbon::cache::aggregation { 'all_min':
+       pattern           => '\.min$',
+       xfilesfactor      => 0.1,
+       aggregationmethod => 'min',
+     }
+
+The order of the of aggregate definitions in the config file is
+determined by the order directive.  Each aggregation has a default
+order of 10.  Lower the value the earlier it will be in the file.
+
+#### aggregation rules
+
+For defining new aggregation rules:
+
+     graphite::carbon::aggregator::rule { 'cell_total_volumes':
+       destination => 'cells.<cell>.total_volumes',
+       delay => '10',
+       aggregation => 'sum',
+       source => 'cells.<cell>.tenants.*.total_volumes',
+     }
 
 ### web
 

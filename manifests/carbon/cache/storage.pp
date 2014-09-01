@@ -1,25 +1,22 @@
 # == define: graphite::carbon::cache::storage
 #
-# This class exists to coordinate all service management related actions,
-# functionality and logical units in a central place.
-#
-# <b>Note:</b> "service" is the Puppet term and type for background processes
-# in general and is used in a platform-independent way. E.g. "service" means
-# "daemon" in relation to Unix-like systems.
+# This type defines how metrics are stored by carbon.
 #
 #
 # === Parameters
 #
-# This class does not provide any parameters.
+# [*pattern*]
+#  The pattern to match metrics with.
 #
+# [*retention*]
+#  How long the metrics are stored in for.
 #
 # === Examples
 #
-# This class may be imported by other classes to use its functionality:
-#   class { 'graphite::service': }
-#
-# It is not intended to be used directly by external resources like node
-# definitions or other modules.
+# graphite::carbon::cache::storage { 'apache_busyWorkers':
+#   pattern    => '^servers\.www.*\.workers\.busyWorkers$',
+#   retentions => '15s:7d,1m:21d,15m:5y',
+# }
 #
 #
 # === Authors
@@ -32,7 +29,7 @@ define graphite::carbon::cache::storage(
   $order = 10
 ) {
 
-  file_fragment { "${$name}_${::fqdn}":
+  file_fragment { "carbon_storage_${$name}_${::fqdn}":
     tag     => "carbon_cache_storage_config_${::fqdn}",
     content => template("${module_name}/etc/carbon/storage-schemas-item.erb"),
     order   => $order
